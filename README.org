@@ -1,0 +1,46 @@
+* ob-powershell
+
+Execute powershell commands from org mode source blocks.
+
+** Setup
+
+*** Install from melpa
+With =use-package= just add the declaration
+
+#+begin_src emacs-lisp
+(use-package ob-powershell)
+#+end_src
+
+
+*** Install from source
+- clone from github
+- add to load path
+#+begin_src emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/lisp/ob-powershell")
+#+end_src
+
+- add to your =.emacs=:
+#+begin_src emacs-lisp
+(require 'ob-powershell)
+#+end_src
+
+*** Add powershell to babel languages
+
+#+begin_src emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   (quote (
+           ;; ...
+           (powershell . t))))
+#+end_src
+
+** Usage
+
+Add a source block with powershell language:
+
+: #+name: get-env-path
+: #+begin_src powershell
+: echo $env:path
+: #+end_src
+
+And execute it using =org-babel-execute-src-block=.
