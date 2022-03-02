@@ -3,6 +3,7 @@
 ;; Copyright (C) 2022 Rob Kiggen
 
 ;; Author: Rob Kiggen <robby.kiggen@essential-it.be>
+;; Maintainer: Mois Moshev <mois.moshev@bottleshipvfx.com>
 ;; Package-Version: 1.0
 ;; Package-Requires: ((emacs "26.1"))
 ;; Keywords: powershell, shell, execute, outlines, processes
