@@ -1,3 +1,13 @@
+;;; ob-powershell.el --- Run Powershell from org mode source blocks
+
+;; Copyright (C) 2022 Rob Kiggen
+
+;; Author: Rob Kiggen <robby.kiggen@essential-it.be>
+;; Version: 1.0
+;; Package-Requires: ((emacs "26.1"))
+;; Keywords: powershell, shell, execute, outlines, processes
+;; URL: https://github.com/rkiggen/ob-powershell
+
 ;;; Commentary:
 
 ;; Currently this only supports the external compilation and execution
@@ -17,17 +27,17 @@
 
 
 (defun org-babel-execute:powershell (body params)
-  "Execute a block of Powershell code with Babel.
-  This function is called by `org-babel-execute-src-block'."
-  (setq scriptfile (org-babel-temp-file "powershell-script-" ".ps1"))
-  (setq full-body (org-babel-expand-body:generic
-		               body params (org-babel-variable-assignments:powershell params)))
-  (message full-body)
-  (with-temp-file scriptfile (insert full-body))
-  (org-babel-eval (concat org-babel-powershell-powershell-command " " scriptfile) ""))
+  "Execute a block of Powershell code BODY with Babe passing PARAMS.
+This function is called by `org-babel-execute-src-block'."
+  (let ((scriptfile (org-babel-temp-file "powershell-script-" ".ps1"))
+        (full-body (org-babel-expand-body:generic
+		                body params (org-babel-variable-assignments:powershell params))))
+    (message full-body)
+    (with-temp-file scriptfile (insert full-body))
+    (org-babel-eval (concat org-babel-powershell-powershell-command " " scriptfile) "")))
 
 (defun org-babel-variable-assignments:powershell (params)
-  "Return a list of Powershell statements assigning the block's variables."
+  "Return a list of Powershell statements parsed from PARAMS, assigning the block's variables."
   (mapcar
    (lambda (pair)
      (format "$env:%s=%s"
@@ -37,8 +47,8 @@
 
 (defun org-babel-powershell-var-to-powershell (var)
   "Convert :var into a powershell variable.
-             Convert an elisp value, VAR, into a string of poershell source code
-             specifying a variable of the same value."
+Convert an elisp value, VAR, into a string of poershell source code
+specifying a variable of the same value."
   (if (listp var)
       (concat "[" (mapconcat #'org-babel-powershell-var-to-powershell var ", ") "]")
     (format "$%S" var)))
