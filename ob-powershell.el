@@ -1,10 +1,11 @@
 ;;; ob-powershell.el --- Run Powershell from org mode source blocks
+;;; SPDX-License-Identifier: MIT
 
 ;; Copyright (C) 2022 Rob Kiggen
 
 ;; Author: Rob Kiggen <robby.kiggen@essential-it.be>
 ;; Maintainer: Mois Moshev <mois.moshev@bottleshipvfx.com>
-;; Package-Version: 1.0
+;; Version: 1.0
 ;; Package-Requires: ((emacs "26.1"))
 ;; Keywords: powershell, shell, execute, outlines, processes
 ;; URL: https://github.com/rkiggen/ob-powershell
@@ -20,7 +21,7 @@
 (defvar org-babel-tangle-lang-exts)
 (add-to-list 'org-babel-tangle-lang-exts '("powershell" . "ps1"))
 
-(defcustom org-babel-powershell-powershell-command "powershell"
+(defcustom ob-powershell-powershell-command "powershell"
   "Name of command used to evaluate powershell blocks."
   :group 'org-babel
   :version "24.3"
@@ -35,7 +36,7 @@ This function is called by `org-babel-execute-src-block'."
 		                body params (org-babel-variable-assignments:powershell params))))
     (message full-body)
     (with-temp-file scriptfile (insert full-body))
-    (org-babel-eval (concat org-babel-powershell-powershell-command " " scriptfile) "")))
+    (org-babel-eval (concat ob-powershell-powershell-command " " scriptfile) "")))
 
 (defun org-babel-variable-assignments:powershell (params)
   "Return a list of Powershell statements parsed from PARAMS, assigning the block's variables."
@@ -43,19 +44,21 @@ This function is called by `org-babel-execute-src-block'."
    (lambda (pair)
      (format "$env:%s=%s"
              (car pair)
-             (org-babel-powershell-var-to-powershell (cdr pair))))
+             (ob-powershell-var-to-powershell (cdr pair))))
    (org-babel--get-vars params)))
 
-(defun org-babel-powershell-var-to-powershell (var)
+(defun ob-powershell-var-to-powershell (var)
   "Convert :var into a powershell variable.
 Convert an elisp value, VAR, into a string of poershell source code
 specifying a variable of the same value."
   (if (listp var)
-      (concat "[" (mapconcat #'org-babel-powershell-var-to-powershell var ", ") "]")
+      (concat "[" (mapconcat #'ob-powershell-var-to-powershell var ", ") "]")
     (format "$%S" var)))
 
 (defun org-babel-prep-session:powershell (session params)
-  "Return an error because Powershell does not support sessions."
+  "Return an error because Powershell does not support sessions.
+SESSION refers to the babel session.
+PARAMS are the passed parameters."
   (error "Sessions are not (yet) supported for Powershell"))
 
 
