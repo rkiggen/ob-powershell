@@ -34,7 +34,7 @@ This function is called by `org-babel-execute-src-block'."
   (let ((scriptfile (org-babel-temp-file "powershell-script-" ".ps1"))
         (full-body (org-babel-expand-body:generic
 		                body params (org-babel-variable-assignments:powershell params))))
-    (message full-body)
+    (message "%s" full-body)
     (with-temp-file scriptfile (insert full-body))
     (org-babel-eval (concat ob-powershell-powershell-command " " scriptfile) "")))
 
