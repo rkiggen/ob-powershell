@@ -11,6 +11,14 @@ With =use-package= just add the declaration
 (use-package ob-powershell)
 #+end_src
 
+*** Install with straight.el
+#+begin_src emacs-lisp
+(use-package ob-powershell
+  :straight t
+  :commands
+  (org-babel-execute:powershell
+   org-babel-expand-body:powershell))
+#+end_src
 
 *** Install from source
 - clone from github
@@ -44,3 +52,14 @@ Add a source block with powershell language:
 : #+end_src
 
 And execute it using =org-babel-execute-src-block=.
+
+Another example with a variable:
+
+: #+begin_src powershell :var tmp="Hello World!"
+:
+: Write-Host $tmp
+:
+: #+end_src
+:
+: #+RESULTS:
+: : Hello World!
