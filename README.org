@@ -34,6 +34,13 @@ With =use-package= just add the declaration
            (powershell . t))))
 #+end_src
 
+*** Configure OS command
+On different OSs the command for Powershell differs. Configure the shell command according to the installation on you OS.
+
+#+begin_src emacs-lisp
+  (customize-set-variable 'org-babel-powershell-os-command "pwsh")
+#+end_src
+
 ** Usage
 
 Add a source block with powershell language:
