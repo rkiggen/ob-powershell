@@ -29,6 +29,15 @@
 
 (defvar org-babel-default-header-args:powershell '())
 
+(defcustom org-babel-powershell-os-command "powershell"
+  "Shell command of the OS to use with `org-babel-execute:powershell'.
+Examples:
+- \"powershell\"
+- \"pwsh\"
+- \"pwsh-preview\"."
+  :group 'org-babel
+  :type 'string)
+
 (defcustom org-babel-powershell-hline-to "None"
   "Replace hlines in incoming tables with this when translating to powershell."
   :group 'org-babel
@@ -69,7 +78,7 @@ This function is called by `org-babel-execute-src-block'."
          (cmdline (or (cdr (assq :cmdline params))
                       "-NoProfile -NoLogo -NonInteractive"))
          (cmd (or (cdr (assq :cmd params))
-                  "powershell")))
+                  org-babel-powershell-os-command)))
     (with-temp-file in-file
       (insert (org-babel-expand-body:powershell body params)))
     (message "cmd: %s" cmd)
